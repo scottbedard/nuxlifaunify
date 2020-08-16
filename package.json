@@ -1,13 +1,17 @@
 {
-  "license": "MIT",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "nuxt": "^2.14.1"
   },
-  "version": "0.1.0",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.61",
     "typescript": "^3.9.7"
+  },
+  "scripts": {
+    "build": "npm run build-backend && npm run build-frontend",
+    "build-backend": "tsc",
+    "build-frontend": "nuxt generate",
+    "dev": "nuxt",
+    "start": "nuxt start",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

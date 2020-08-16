@@ -1,2 +1,6 @@
+.env
+.netlify
+.nuxt
+dist
 functions/built
 node_modules
