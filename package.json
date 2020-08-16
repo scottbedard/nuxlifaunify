@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "faunadb": "^2.14.2",
     "nuxt": "^2.14.1"
   },
   "devDependencies": {
