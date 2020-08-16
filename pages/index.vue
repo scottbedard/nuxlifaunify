@@ -1,5 +1,8 @@
 <template>
   <div>
-    <h1>Hello from Nuxt</h1>
+    <div>
+      <h2 class="font-bold mb-2 text-xl">Create user</h2>
+      <input />
+    </div>
   </div>
 </template>
