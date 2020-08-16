@@ -4,15 +4,17 @@ An experimental starting point for [Netlify](https://www.netlify.com/), [Fauna](
 
 ### Getting started
 
-1. Create a [Fauna](https://fauna.com/) account
+1. Register [Fauna](https://fauna.com/) account
 2. [Create a database](https://docs.fauna.com/fauna/current/start/cloud#create-db)
-3. Set client and server keys in `.env` file
-4. Build database, `$ node ./schema.js`
-5. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation), `$ npm install -g netlify-cli`
+3. Set client and server keys in `.env`
+4. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
 
 Once this is done, the following commands will be available.
 
 ```bash
+# build database
+$ node ./schema.js
+
 # start dev server
 $ netlify dev
 
