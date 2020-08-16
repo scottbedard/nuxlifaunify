@@ -34,14 +34,19 @@ export default {
     };
   },
   methods: {
+    /**
+     * Create a user
+     */
     onCreate() {
       fetch('/.netlify/functions/user-create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.create),
-      });
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(this.create),
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log('User created', data);
+        });
     },
   },
 };
