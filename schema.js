@@ -28,7 +28,7 @@ async function build() {
 }
 
 build()
-  .then(() => console.log(chalk.green('✓ Build complete\n')))
+  .then(() => console.log(chalk.green('Database migration complete\n')))
   .catch(console.error.bind(console));
 
 // helper functions to make the above queries readable and fault tollerant.
