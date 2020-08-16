@@ -12,15 +12,16 @@ export const handler = async function (
 ) {
   const { email, password } = JSON.parse(event.body || '{}');
 
-  const result = await client.query(
+  await client.query(
     q.Create(q.Collection('users'), {
       credentials: { password },
       data: { email },
     })
-  );
-
-  callback(null, {
-    body: JSON.stringify((result as any).data),
-    statusCode: 200,
-  });
+  ).then((ret) => {
+    callback(null, {
+      body: JSON.stringify((ret as any).data),
+      statusCode: 200,
+    });
+  })
+  .catch((err) => console.log('Error:', err));
 };
