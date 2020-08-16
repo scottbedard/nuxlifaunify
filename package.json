@@ -5,14 +5,17 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.61",
+    "chalk": "^4.1.0",
+    "faunadb-migrate": "git+https://github.com/fauna/faunadb-migrate.git#master",
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "build": "npm run build-backend && npm run build-frontend",
     "build-backend": "tsc",
     "build-frontend": "nuxt generate",
+    "build": "npm run build-backend && npm run build-frontend && npm run migrate",
+    "db-setup": "faunadb-migrate setup",
     "dev": "nuxt",
-    "start": "nuxt start",
+    "migrate": "node ./schema.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
