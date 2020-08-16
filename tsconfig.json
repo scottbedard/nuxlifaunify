@@ -1,0 +1,17 @@
+  
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "functions/built",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2018"
+  },
+  "exclude": [
+    "functions/built",
+    "node_modules"
+  ]
+}
