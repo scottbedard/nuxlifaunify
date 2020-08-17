@@ -4,6 +4,8 @@
 
 An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https://www.netlify.com/), [Fauna](https://fauna.com/), and [Typescript](https://www.typescriptlang.org/).
 
+[Click here for live demo](https://nuxlifaunify.netlify.app/)
+
 ### Getting started
 
 1. Register a [Fauna](https://fauna.com/) account
