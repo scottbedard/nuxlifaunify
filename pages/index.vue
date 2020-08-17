@@ -51,8 +51,14 @@
     </template>
 
     <div v-else>
-      <h2 class="font-bold text-xl">Logged in as:</h2>
-      <pre>{{ currentUser }}</pre>
+      <h2 class="font-bold mb-2 text-xl">Logged in as:</h2>
+      <pre class="mb-2">{{ currentUser }}</pre>
+      <a
+        class="text-blue-500 hover:text-blue-700"
+        href="#"
+        @click.prevent="onLogout">
+        Click here to out
+      </a>
     </div>
   </div>
 </template>
@@ -111,6 +117,15 @@ export default {
         this.login.email = '';
         this.login.password = '';
         console.log('Logged in', data);
+      });
+    },
+
+    /**
+     * Log out
+     */
+    onLogout() {
+      axios.post('/.netlify/functions/user-logout').then(data => {
+        this.currentUser = null;
       });
     },
   },

@@ -1,4 +1,3 @@
-import * as cookie from 'cookie';
 import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
 import { response } from './utils/http';
 

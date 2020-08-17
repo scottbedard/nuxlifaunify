@@ -3,6 +3,18 @@ import { isProduction } from './constants';
 import { APIGatewayProxyCallback } from 'aws-lambda';
 
 /**
+ * Destroy an http-only cookie.
+ */
+export function destroyCookie(key: string) {
+  return cookie.serialize(key, '', {
+    httpOnly: true,
+    maxAge: -1,
+    path: '/',
+    secure: isProduction,
+  });
+}
+
+/**
  * Helper to serialize the response body.
  */
 export function response(
@@ -23,12 +35,12 @@ export function response(
 export function serializeCookie(
   key: string, 
   value: string, 
-  maxAge = 14 * 24 * 3600000, // two weeks
+  maxAge = 14 * 86400, // two weeks
 ) {
   return cookie.serialize(key, value, {
-    secure: isProduction,
     httpOnly: true,
-    path: '/',
     maxAge,
+    path: '/',
+    secure: isProduction,
   });
 }
