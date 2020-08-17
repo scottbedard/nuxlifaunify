@@ -1,6 +1,6 @@
-# nuxtlifaunify
+# nuxlifaunify
 
-An experimental starting point for [Netlify](https://www.netlify.com/), [Fauna](https://fauna.com/), [Typescript](https://www.typescriptlang.org/), and [Nuxt](https://nuxtjs.org/).
+An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https://www.netlify.com/), [Fauna](https://fauna.com/), and [Typescript](https://www.typescriptlang.org/).
 
 ### Getting started
 
