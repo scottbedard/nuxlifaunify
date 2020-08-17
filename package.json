@@ -5,7 +5,9 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.61",
+    "@types/cookie": "^0.4.0",
     "chalk": "^4.1.0",
+    "cookie": "^0.4.1",
     "typescript": "^3.9.7"
   },
   "scripts": {

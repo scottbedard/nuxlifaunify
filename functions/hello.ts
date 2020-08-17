@@ -1,12 +1,14 @@
+import * as cookie from 'cookie';
 import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
+import { response } from './utils/http';
 
+/**
+ * Hello world
+ */
 export const handler = async function (
   event: APIGatewayProxyEvent,
   context: any,
-  callback: APIGatewayProxyCallback
+  cb: APIGatewayProxyCallback
 ) {
-  callback(null, {
-    body: JSON.stringify({ message: 'Hello world' }),
-    statusCode: 200,
-  });
+  return response(cb, { message: 'Hello world' });
 };
