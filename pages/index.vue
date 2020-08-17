@@ -6,7 +6,7 @@
     
     <template v-else-if="!currentUser">
       <!-- create -->
-      <form class="gap-3 grid" @submit.prevent="onCreate">
+      <form class="gap-3 grid" @submit.prevent="registerCurrentUser(create)">
         <h2 class="font-bold text-xl">Create account</h2>
         <input
           v-model="create.email"
@@ -28,7 +28,7 @@
       </form>
 
       <!-- login -->
-      <form class="gap-3 grid" @submit.prevent="onLogin">
+      <form class="gap-3 grid" @submit.prevent="authenticateCurrentUser(login)">
         <h2 class="font-bold text-xl">Login</h2>
         <input
           v-model="login.email"
@@ -53,17 +53,12 @@
     <div v-else>
       <h2 class="font-bold mb-2 text-xl">Logged in as:</h2>
       <pre class="mb-2">{{ currentUser }}</pre>
-      <a
-        class="text-blue-500 hover:text-blue-700"
-        href="#"
-        @click.prevent="onLogout">
-        Click here to log out
-      </a>
     </div>
   </div>
 </template>
 
 <script>
+import { useCurrentUser } from '~/app/behaviors/current-user';
 import axios from 'axios';
 
 export default {
@@ -73,7 +68,6 @@ export default {
         email: '',
         password: '',
       },
-      currentUser: null,
       loading: false,
       login: {
         email: '',
@@ -81,53 +75,18 @@ export default {
       },
     };
   },
-  mounted() {
-    this.loadCurrentUser();
-  },
-  methods: {
-    /**
-     * Load the current user.
-     */
-    loadCurrentUser() {
-      this.loading = true;
+  setup() {
+    const {
+      authenticateCurrentUser,
+      currentUser,
+      registerCurrentUser,
+    } = useCurrentUser();
 
-      axios.get('/.netlify/functions/user-current').then(response => {
-        this.currentUser = response?.data.user?.data || null;
-      }).finally(() => {
-        this.loading = false;
-      });
-    },
-
-    /**
-     * Create a user
-     */
-    onCreate() {
-      axios.post('/.netlify/functions/user-create', this.create).then(data => {
-        this.create.email = '';
-        this.create.password = '';
-        console.log('User created', data);
-      });
-    },
-
-    /**
-     * Authenticate a user
-     */
-    onLogin() {
-      axios.post('/.netlify/functions/user-login', this.login).then(data => {
-        this.login.email = '';
-        this.login.password = '';
-        console.log('Logged in', data);
-      });
-    },
-
-    /**
-     * Log out
-     */
-    onLogout() {
-      axios.post('/.netlify/functions/user-logout').then(data => {
-        this.currentUser = null;
-      });
-    },
+    return {
+      authenticateCurrentUser,
+      currentUser,
+      registerCurrentUser,
+    };
   },
 };
 </script>

@@ -1,4 +1,10 @@
 export default {
+  buildModules: [
+    '@nuxtjs/composition-api',
+  ],
+  generate: {
+    interval: 2000, // https://github.com/nuxt-community/composition-api/issues/44
+  },
   head: {
     bodyAttrs: {
       class: 'bg-gray-200 px-3 text-gray-800 md:px-6',
