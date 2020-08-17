@@ -7,22 +7,26 @@
         </nuxt-link>
       </div>
       <nav class="sm:text-right sm:w-1/2">
-        <span v-if="currentUser">
-          {{ currentUser.email }} -
-          <a
-            v-if="currentUser"
-            class="text-blue-500 hover:text-blue-700"
-            href="#"
-            @click.prevent="logoutCurrentUser">
-            Log out
-          </a>
-        </span>
-        <nuxt-link
-          v-else
+        <a
+          v-if="currentUser"
           class="text-blue-500 hover:text-blue-700"
-          :to="{ name: 'register' }">
-          Create an account
-        </nuxt-link>
+          href="#"
+          @click.prevent="logoutCurrentUser">
+          Log out
+        </a>
+        <template v-else>
+          <nuxt-link
+            class="text-blue-500 hover:text-blue-700"
+            :to="{ name: 'register' }">
+            Create an account
+          </nuxt-link>
+          or
+          <nuxt-link
+            class="text-blue-500 hover:text-blue-700"
+            :to="{ name: 'login' }">
+            log in
+          </nuxt-link>
+        </template>
       </nav>
     </div>
     <nuxt />

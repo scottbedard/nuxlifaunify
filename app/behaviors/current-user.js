@@ -11,12 +11,20 @@ const currentUserIsLoading = ref(false);
  */
 export function useCurrentUser() {
   // authenticate
-  const authenticateCurrentUser = async (credentials) => {
-    const data = await axios.post('/.netlify/functions/user-login', credentials)
-    
-    console.log('authenticateCurrentUser!', data);
+  const authenticateCurrentUserIsLoading = ref(false);
 
-    return data;
+  const authenticateCurrentUser = async (credentials) => {
+    authenticateCurrentUserIsLoading.value = true;
+
+    const xhr = axios.post('/.netlify/functions/user-login', credentials)
+    
+    xhr.then((response) => {
+      console.log('hooray', response);
+    }).finally(() => {
+      authenticateCurrentUserIsLoading.value = false;
+    });
+
+    return xhr;
   }
 
   // logout
@@ -43,6 +51,7 @@ export function useCurrentUser() {
 
   return {
     authenticateCurrentUser,
+    authenticateCurrentUserIsLoading,
     currentUser,
     currentUserIsLoading,
     logoutCurrentUser,
