@@ -1,7 +1,7 @@
 export default {
   head: {
     bodyAttrs: {
-      class: 'bg-gray-100 p-6 text-gray-800',
+      class: 'bg-gray-200 px-3 text-gray-800 md:px-6',
     },
     link: [
       // notice: 
