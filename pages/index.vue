@@ -57,7 +57,7 @@
         class="text-blue-500 hover:text-blue-700"
         href="#"
         @click.prevent="onLogout">
-        Click here to out
+        Click here to log out
       </a>
     </div>
   </div>
