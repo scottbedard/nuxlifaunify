@@ -19,18 +19,18 @@ Once this is done, the following commands will be available.
 # start dev server
 $ netlify dev
 
-# compile functions
-$ npm run build-backend
+# compile backend functions
+$ npm run build-be
 
-# build frontend
-$ npm run build-frontend
+# build nuxt frontend
+$ npm run build-fe
 ```
 
 ### Project goals
 
-This project is primarily an excuse to learn more about severless technology and Jamstack apps. That said, I'd like it to support to following features so it can serve as a starting point for future apps.
+This project is primarily an excuse to learn more about severless technology and Jamstack apps. That said, I'd like it to have the following features so it can serve as a starting point for future apps.
 
-1. Be entirely serverless and ready to deploy with Netlify
-2. Have easy database management and support disposable dev environments
-3. Demonstrate basic user authentication without exposing sensitive tokens to the client
-4. Compile backend lambda functions using Typescript
+- Entirely serverless and ready to deploy with Netlify
+- Easy database management for disposable dev environments
+- Backend lambda functions compiled with Typescript
+- Basic user authentication
