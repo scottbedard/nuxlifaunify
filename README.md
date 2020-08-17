@@ -4,11 +4,12 @@ An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https:
 
 ### Getting started
 
-1. Register [Fauna](https://fauna.com/) account
+1. Register a [Fauna](https://fauna.com/) account
 2. [Create a database](https://docs.fauna.com/fauna/current/start/cloud#create-db)
 3. Set server key in `.env`
-4. Build the database, `$ node ./schema.js`
-5. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
+4. Install dependencies, `$ npm install`
+5. Build the database, `$ node ./schema.js`
+6. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
 
 Once this is done, the following commands will be available.
 
@@ -25,7 +26,7 @@ $ npm run build-frontend
 
 ### Project goals
 
-This project is primarily an excuse to learn more about severless technology and the Jamstack apps in general. That said, I'd like it to support to following features so it can serve as a starting point for future apps.
+This project is primarily an excuse to learn more about severless technology and Jamstack apps. That said, I'd like it to support to following features so it can serve as a starting point for future apps.
 
 1. Be entirely serverless and ready to deploy with Netlify
 2. Have easy database management and support disposable dev environments
