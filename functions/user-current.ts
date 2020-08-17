@@ -14,7 +14,6 @@ export const handler = async function (
 
   try {
     const user = await client.query(q.Get(q.Identity()));
-    
     return response(cb, { user });
   } catch (e) {
     return response(cb, { user: null });

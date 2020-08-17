@@ -7,7 +7,7 @@ import { sessionKey } from './constants';
  * Create a Fauna client for the current user.
  */
 export function createClient(event: APIGatewayProxyEvent) {
-  const cookies = cookie.parse(event.headers.cookie);
+  const cookies = cookie.parse(event?.headers?.cookie || '');
 
   return {
     client: new Client({
