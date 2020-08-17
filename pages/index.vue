@@ -52,12 +52,14 @@
 
     <div v-else>
       <h2 class="font-bold text-xl">Logged in as:</h2>
-      <pre>{{ currentUser.user.data }}</pre>
+      <pre>{{ currentUser }}</pre>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   created() {
     this.loadCurrentUser();
@@ -83,48 +85,33 @@ export default {
     loadCurrentUser() {
       this.loading = true;
 
-      fetch('/.netlify/functions/user-current')
-        .then(res => res.json())
-        .then(user => {
-          this.currentUser = user;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      axios.get('/.netlify/functions/user-current').then(response => {
+        this.currentUser = response?.data.user?.data || null;
+      }).finally(() => {
+        this.loading = false;
+      });
     },
 
     /**
      * Create a user
      */
     onCreate() {
-      fetch('/.netlify/functions/user-create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(this.create),
-        })
-        .then(res => res.json())
-        .then(data => {
-          this.create.email = '';
-          this.create.password = '';
-          console.log('User created', data);
-        });
+      axios.post('/.netlify/functions/user-create', this.create).then(data => {
+        this.create.email = '';
+        this.create.password = '';
+        console.log('User created', data);
+      });
     },
 
     /**
      * Authenticate a user
      */
     onLogin() {
-      fetch('/.netlify/functions/user-login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(this.login),
-        })
-        .then(res => res.json())
-        .then(data => {
-          this.login.email = '';
-          this.login.password = '';
-          console.log('Logged in', data);
-        });
+      axios.post('/.netlify/functions/user-login', this.login).then(data => {
+        this.login.email = '';
+        this.login.password = '';
+        console.log('Logged in', data);
+      });
     },
   },
 };
