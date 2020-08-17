@@ -1,5 +1,7 @@
 # nuxlifaunify
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1f179ae9-7f19-4498-a9fc-853927994842/deploy-status)](https://nuxlifaunify.netlify.app/)
+
 An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https://www.netlify.com/), [Fauna](https://fauna.com/), and [Typescript](https://www.typescriptlang.org/).
 
 ### Getting started
