@@ -1,48 +1,59 @@
 <template>
   <div class="gap-16 grid max-w-4xl mx-auto md:grid-cols-2">
-    <!-- create -->
-    <form class="gap-3 grid" @submit.prevent="onCreate">
-      <h2 class="font-bold text-xl">Create user</h2>
-      <input
-        v-model="create.email"
-        class="border border-gray-500 px-4 py-2 rounded"
-        placeholder="Email"
-        type="email" />
-      <input
-        v-model="create.password"
-        class="border border-gray-500 px-4 py-2 rounded"
-        placeholder="Password"
-        type="password" />
-      <div>
-        <button
-          class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
-          type="submit">
-          Submit
-        </button>
-      </div>
-    </form>
+    <div v-if="loading">
+      Loading...
+    </div>
+    
+    <template v-else-if="!currentUser">
+      <!-- create -->
+      <form class="gap-3 grid" @submit.prevent="onCreate">
+        <h2 class="font-bold text-xl">Create account</h2>
+        <input
+          v-model="create.email"
+          class="border border-gray-500 px-4 py-2 rounded"
+          placeholder="Email"
+          type="email" />
+        <input
+          v-model="create.password"
+          class="border border-gray-500 px-4 py-2 rounded"
+          placeholder="Password"
+          type="password" />
+        <div>
+          <button
+            class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
+            type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
 
-    <!-- login -->
-    <form class="gap-3 grid" @submit.prevent="onLogin">
-      <h2 class="font-bold text-xl">Login</h2>
-      <input
-        v-model="login.email"
-        class="border border-gray-500 px-4 py-2 rounded"
-        placeholder="Email"
-        type="email" />
-      <input
-        v-model="login.password"
-        class="border border-gray-500 px-4 py-2 rounded"
-        placeholder="Password"
-        type="password" />
-      <div>
-        <button
-          class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
-          type="submit">
-          Submit
-        </button>
-      </div>
-    </form>
+      <!-- login -->
+      <form class="gap-3 grid" @submit.prevent="onLogin">
+        <h2 class="font-bold text-xl">Login</h2>
+        <input
+          v-model="login.email"
+          class="border border-gray-500 px-4 py-2 rounded"
+          placeholder="Email"
+          type="email" />
+        <input
+          v-model="login.password"
+          class="border border-gray-500 px-4 py-2 rounded"
+          placeholder="Password"
+          type="password" />
+        <div>
+          <button
+            class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
+            type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </template>
+
+    <div v-else>
+      <h2 class="font-bold text-xl">Logged in as:</h2>
+      <pre>{{ currentUser.user.data }}</pre>
+    </div>
   </div>
 </template>
 
@@ -57,7 +68,8 @@ export default {
         email: '',
         password: '',
       },
-      current: null,
+      currentUser: null,
+      loading: false,
       login: {
         email: '',
         password: '',
@@ -69,8 +81,16 @@ export default {
      * Load the current user.
      */
     loadCurrentUser() {
+      this.loading = true;
+
       fetch('/.netlify/functions/user-current')
-        .then((res) => console.log(res));
+        .then(res => res.json())
+        .then(user => {
+          this.currentUser = user;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
