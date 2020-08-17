@@ -10,10 +10,11 @@
     "target": "es2018"
   },
   "exclude": [
+    "app",
+    "components",
     "functions/built",
-    "node_modules"
-  ],
-  "include": [
-    "functions"
+    "layouts",
+    "node_modules",
+    "pages"
   ]
 }
