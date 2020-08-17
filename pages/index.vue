@@ -61,9 +61,6 @@
 import axios from 'axios';
 
 export default {
-  created() {
-    this.loadCurrentUser();
-  },
   data() {
     return {
       create: {
@@ -77,6 +74,9 @@ export default {
         password: '',
       },
     };
+  },
+  mounted() {
+    this.loadCurrentUser();
   },
   methods: {
     /**
