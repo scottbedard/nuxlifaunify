@@ -18,9 +18,7 @@ export function useCurrentUser() {
 
     const xhr = axios.post('/.netlify/functions/user-login', credentials)
     
-    xhr.then((response) => {
-      console.log('hooray', response);
-    }).finally(() => {
+    xhr.finally(() => {
       authenticateCurrentUserIsLoading.value = false;
     });
 
@@ -44,8 +42,6 @@ export function useCurrentUser() {
     if (id === refreshId) {
       currentUserIsLoading.value = false;
       currentUser.value = response?.data?.user?.data || null;
-
-      console.log(currentUser);
     }
   }
 
