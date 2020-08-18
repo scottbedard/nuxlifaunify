@@ -34,23 +34,22 @@
 </template>
 
 <script>
-import { useCurrentUser } from '~/app/behaviors/current-user';
+import {
+  currentUser,
+  updateCurrentUser,
+  useLogoutCurrentUser,
+} from '~/app/behaviors/current-user';
 
 export default {
   mounted() {
-    this.refreshCurrentUser();
+    updateCurrentUser();
   },
   setup() {
-    const {
-      currentUser,
-      logoutCurrentUser,
-      refreshCurrentUser,
-    } = useCurrentUser();
+    const { logoutCurrentUser } = useLogoutCurrentUser();
 
     return {
       currentUser,
       logoutCurrentUser,
-      refreshCurrentUser,
     };
   },
 };

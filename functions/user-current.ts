@@ -1,5 +1,6 @@
 import { createClient } from './utils/fauna';
-import { response } from './utils/http';
+import { destroyCookie, response } from './utils/http';
+import { sessionKey } from './utils/constants';
 import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
 
 /**
@@ -17,6 +18,10 @@ export const handler = async function (
 
     return response(cb, { user });
   } catch (e) {
-    return response(cb, { user: null });
+    return response(cb, { user: null }, {
+      headers: {
+        'Set-Cookie': destroyCookie(sessionKey),
+      },
+    });
   }
 };

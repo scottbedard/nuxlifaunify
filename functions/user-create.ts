@@ -1,6 +1,7 @@
-import { createClient } from './utils/fauna';
-import { response } from './utils/http';
 import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
+import { createClient } from './utils/fauna';
+import { response, serializeCookie } from './utils/http';
+import { sessionKey } from './utils/constants';
 
 /**
  * Create a user
@@ -21,10 +22,18 @@ export const handler = async function (
       })
     );
 
-    return response(cb, { user });
+    const { secret }: any = await client.query(
+      q.Login(q.Match(q.Index('users_by_email'), email), { password })
+    );
+
+    return response(cb, { user }, {
+      headers: {
+        'Set-Cookie': serializeCookie(sessionKey, secret),
+      },
+    });
   } catch (err) {
     console.log('Error:', err);
 
-    return response(cb, { result: 'failed' }, { statusCode: 500 });
+    return response(cb, {}, { statusCode: 500 });
   }
 };

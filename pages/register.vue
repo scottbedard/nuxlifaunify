@@ -11,23 +11,23 @@
         class="border border-gray-500 px-4 py-2 rounded"
         placeholder="Email"
         type="email"
-        :disabled="createUserIsLoading" />
+        :disabled="registerCurrentUserIsLoading" />
       <input
         v-model="form.password"
         class="border border-gray-500 px-4 py-2 rounded"
         placeholder="Password"
         type="password"
-        :disabled="createUserIsLoading" />
+        :disabled="registerCurrentUserIsLoading" />
       <div>
         <button
           class="px-4 py-2 rounded text-white"
           type="submit"
           :class="
-            createUserIsLoading
+            registerCurrentUserIsLoading
               ? 'bg-gray-500'
               : 'bg-blue-500 hover:bg-blue-700'
           "
-          :disabled="createUserIsLoading">
+          :disabled="registerCurrentUserIsLoading">
           Submit
         </button>
       </div>
@@ -36,8 +36,10 @@
 </template>
 
 <script>
-import { useCreateUser } from '~/app/behaviors/users';
-import { useCurrentUser } from '~/app/behaviors/current-user';
+import {
+  currentUser,
+  useRegisterCurrentUser,
+} from '~/app/behaviors/current-user';
 
 export default {
   data() {
@@ -51,32 +53,21 @@ export default {
   },
   setup() {
     const {
-      createUser,
-      createUserIsLoading,
-    } = useCreateUser();
-
-    const { currentUser } = useCurrentUser();
+      registerCurrentUser,
+      registerCurrentUserIsLoading,
+    } = useRegisterCurrentUser();
 
     return {
-      createUser,
-      createUserIsLoading,
       currentUser,
+      registerCurrentUser,
+      registerCurrentUserIsLoading,
     };
   },
   methods: {
     onSubmit() {
-      this.success = false;
-
-      this.createUser(this.form).then(response => {
-        this.success = true;
+      this.registerCurrentUser(this.form).then(() => {
+        this.$router.push({ name: 'index' });
       });
-    },
-  },
-  watch: {
-    currentUser(currentUser) {
-      if (currentUser) {
-        this.$router.replace({ name: 'index' });
-      }
     },
   },
 };

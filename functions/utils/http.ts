@@ -6,12 +6,7 @@ import { APIGatewayProxyCallback } from 'aws-lambda';
  * Destroy an http-only cookie.
  */
 export function destroyCookie(key: string) {
-  return cookie.serialize(key, '', {
-    httpOnly: true,
-    maxAge: -1,
-    path: '/',
-    secure: isProduction,
-  });
+  return serializeCookie(key, '', -1);
 }
 
 /**

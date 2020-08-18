@@ -10,12 +10,10 @@
 </template>
 
 <script>
-import { useCurrentUser } from '~/app/behaviors/current-user';
+import { currentUser } from '~/app/behaviors/current-user';
 
 export default {
   setup() {
-    const { currentUser } = useCurrentUser();
-
     return { currentUser };
   },
 };

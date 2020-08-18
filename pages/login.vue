@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { useCurrentUser } from '~/app/behaviors/current-user';
+import { currentUser, useAuthenticateCurrentUser } from '~/app/behaviors/current-user';
 
 export default {
   data() {
@@ -47,22 +47,17 @@ export default {
     const {
       authenticateCurrentUser,
       authenticateCurrentUserIsLoading,
-      currentUser,
-      refreshCurrentUser,
-    } = useCurrentUser();
+    } = useAuthenticateCurrentUser();
 
     return {
       authenticateCurrentUser,
       authenticateCurrentUserIsLoading,
       currentUser,
-      refreshCurrentUser,
     };
   },
   methods: {
     onSubmit() {
-      // @todo: do this in one step
-      this.authenticateCurrentUser(this.form)
-        .then(this.refreshCurrentUser);
+      this.authenticateCurrentUser(this.form);
     },
   },
   watch: {
