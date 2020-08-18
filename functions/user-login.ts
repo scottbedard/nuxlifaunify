@@ -16,7 +16,7 @@ export const handler = async function (
 
   try {
     const { secret }: any = await client.query(
-      q.Login(q.Match(q.Index('users_by_email'), email), { password })
+      q.Login(q.Match(q.Index('unique_User_email'), email), { password })
     );
 
     return response(cb, { result: 'success' }, {

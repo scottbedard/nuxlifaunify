@@ -15,7 +15,7 @@ export const handler = async function (
 
   try {
     const user = await client.query(
-      q.Create(q.Collection('users'), {
+      q.Create(q.Collection('User'), {
         credentials: { password },
         data: { email },
       })
