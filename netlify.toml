@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build && ls -a"
+  command = "npm run build && node ./schema.js"
   functions = "functions/built/functions"
   publish = "dist"
 
