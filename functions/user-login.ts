@@ -15,9 +15,9 @@ export const handler = async function (
   const { email, password } = JSON.parse(event.body || '{}');
 
   try {
-    const userByEmail = q.Match(q.Index('users_by_email'), email);
-    const { secret }: any = await client.query(q.Login(userByEmail, { password }));
-    const user = await client.query(q.Get(userByEmail));
+    const uniqueUserByEmail = q.Match(q.Index('unique_User_email'), email);
+    const { secret }: any = await client.query(q.Login(uniqueUserByEmail, { password }));
+    const user = await client.query(q.Get(uniqueUserByEmail));
 
     return response(cb, { user }, {
       headers: {

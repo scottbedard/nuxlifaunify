@@ -15,6 +15,7 @@
     "functions/built",
     "layouts",
     "node_modules",
-    "pages"
+    "pages",
+    "scripts"
   ]
 }

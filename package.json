@@ -13,6 +13,7 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
+    "bootstrap-db": "node ./scripts/bootstrap-db.js",
     "build-be": "tsc",
     "build-fe": "nuxt generate",
     "build": "npm run build-be && npm run build-fe",
