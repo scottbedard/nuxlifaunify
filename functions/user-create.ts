@@ -1,39 +1,37 @@
-import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
-import { createClient } from './utils/fauna';
-import { response, serializeCookie } from './utils/http';
+import { FaunaDocument, User } from './utils/types';
+import { lambda, serializeCookie } from './utils/http';
 import { sessionKey } from './utils/constants';
+import { toData } from './utils/fauna';
 
 /**
- * Create a user
+ * Create user
  */
-export const handler = async function (
-  event: APIGatewayProxyEvent,
-  context: any,
-  cb: APIGatewayProxyCallback
-) {
-  const { client, q } = createClient(event);
-  const { email, password } = JSON.parse(event.body || '{}');
+export const handler = lambda(async ({ client, q }, payload) => {
+  const { email, password } = payload;
 
   try {
-    const user = await client.query(
+    // create and authenticate the user
+    const user = await client.query<FaunaDocument<User>>(
       q.Create(q.Collection('User'), {
         credentials: { password },
         data: { email },
       })
     );
 
-    const { secret }: any = await client.query(
+    const { secret } = await client.query<{ secret: string }>(
       q.Login(q.Match(q.Index('unique_User_email'), email), { password })
     );
 
-    return response(cb, { user }, {
+    // success
+    return [{
+      user: toData(user),
+    }, {
       headers: {
         'Set-Cookie': serializeCookie(sessionKey, secret),
       },
-    });
+    }];
   } catch (err) {
-    console.log('Error:', err);
-
-    return response(cb, {}, { statusCode: 500 });
+    // @todo: handle common errors
+    throw err;
   }
-};
+});

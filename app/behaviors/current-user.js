@@ -21,7 +21,7 @@ export function updateCurrentUser() {
   _currentUserIsLoading.value = true;
 
   return user.current().then((response) => {
-    _currentUser.value = response?.data?.user?.data || null;
+    _currentUser.value = response?.data?.user || null;
   }).finally(() => {
     _currentUserIsLoading.value = false;
   });
@@ -37,7 +37,7 @@ export function useAuthenticateCurrentUser() {
     authenticateCurrentUserIsLoading.value = true;
 
     user.authenticate(credentials).then(response => {
-      _currentUser.value = response?.data?.user?.data || null;
+      _currentUser.value = response?.data?.user || null;
     }).finally(() => {
       authenticateCurrentUserIsLoading.value = false;
     });
@@ -88,7 +88,7 @@ export function useRegisterCurrentUser() {
     registerCurrentUserIsLoading.value = true;
 
     return user.create(credentials).then(response => {
-      _currentUser.value = response?.data?.user?.data || null;
+      _currentUser.value = response?.data?.user || null;
     }).finally(() => {
       registerCurrentUserIsLoading.value = false;
     });

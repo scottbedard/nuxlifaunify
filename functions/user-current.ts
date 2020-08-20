@@ -1,27 +1,33 @@
-import { createClient } from './utils/fauna';
-import { destroyCookie, response } from './utils/http';
+import { destroyCookie, lambda } from './utils/http';
+import { FaunaDocument, User } from './utils/types';
 import { sessionKey } from './utils/constants';
-import { APIGatewayProxyCallback, APIGatewayProxyEvent } from 'aws-lambda';
+import { toData } from './utils/fauna';
 
 /**
- * Get the authenticated user.
+ * Current user
  */
-export const handler = async function (
-  event: APIGatewayProxyEvent,
-  context: any,
-  cb: APIGatewayProxyCallback
-) {
-  const { client, q } = createClient(event);
-
+export const handler = lambda(async ({ client, q }) => {
   try {
-    const user = await client.query(q.Get(q.Identity()));
+    // query the authenticated user
+    const user = await client.query<FaunaDocument<User>>(
+      q.Get(q.Identity())
+    );
 
-    return response(cb, { user });
-  } catch (e) {
-    return response(cb, { user: null }, {
-      headers: {
-        'Set-Cookie': destroyCookie(sessionKey),
-      },
-    });
+    return {
+      user: toData(user),
+    };
+  } catch (err) {
+    // not authenticated
+    if (err.message === 'missing identity') {
+      return [{
+        user: null,
+      }, {
+        headers: {
+          'Set-Cookie': destroyCookie(sessionKey),
+        },
+      }];
+    }
+    
+    throw err;
   }
-};
+});
