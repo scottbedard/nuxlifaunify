@@ -10,12 +10,9 @@
     "target": "es2018"
   },
   "exclude": [
-    "app",
-    "components",
+    "client",
     "functions/built",
-    "layouts",
     "node_modules",
-    "pages",
     "scripts"
   ]
 }
