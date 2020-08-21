@@ -6,10 +6,3 @@ export type FaunaDocument<Data> = {
   ref: any,
   ts: number,
 }
-
-/**
- * User
- */
-export type User = {
-  email: string
-};

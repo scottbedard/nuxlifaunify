@@ -1,24 +1,25 @@
 import { destroyCookie, lambda } from './utils/http';
-import { FaunaDocument, User } from './utils/types';
+import { FaunaDocument } from './utils/types';
 import { sessionKey } from './utils/constants';
 import { toData } from './utils/fauna';
+import { User, UserData } from './models/user';
 
 /**
  * Current user
  */
-export const handler = lambda(async ({ client, q }) => {
+export const handler = lambda(async (client) => {
   try {
     // query the authenticated user
-    const user = await client.query<FaunaDocument<User>>(
-      q.Get(q.Identity())
+    const result = await client.query<FaunaDocument<UserData>>(
+      User.identity()
     );
 
     return {
-      user: toData(user),
+      user: toData(result),
     };
   } catch (err) {
-    // not authenticated
-    if (err.message === 'missing identity') {
+    // unauthorized / not authenticated
+    if (['unauthorized', 'missing identity'].includes(err.message)) {
       return [{
         user: null,
       }, {

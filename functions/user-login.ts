@@ -1,26 +1,27 @@
 import { destroyCookie, lambda, serializeCookie } from './utils/http';
-import { FaunaDocument, User } from './utils/types';
+import { FaunaDocument } from './utils/types';
 import { sessionKey } from './utils/constants';
 import { toData } from './utils/fauna';
+import { User, UserData } from './models/user';
 
 /**
  * Authenticate user
  */
-export const handler = lambda(async ({ client, q }, payload) => {
+export const handler = lambda(async (client, payload) => {
   try {
-    const { email, password } = payload;
+    const user = new User(payload);
 
     const { secret } = await client.query<{ secret: string }>(
-      q.Login(q.Match(q.Index('unique_User_email'), email), { password })
+      user.login()
     );
 
-    const user = await client.query<FaunaDocument<User>>(
-      q.Get(q.Match(q.Index('unique_User_email'), email))
+    const result = await client.query<FaunaDocument<UserData>>(
+      user.findByEmail()
     );
 
     // authenticated
     return [{
-      user: toData(user),
+      user: toData(result),
     }, {
       headers: {
         'Set-Cookie': serializeCookie(sessionKey, secret),

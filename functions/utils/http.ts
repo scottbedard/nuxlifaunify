@@ -15,18 +15,18 @@ export function destroyCookie(key: string) {
  * Create a lambda function with db client
  */
 export function lambda(
-  handler: (faunaCtx: { client: Client, q: typeof query }, payload: any) => any,
+  handler: (client: Client, payload: any) => any,
 ) {
   return async function(
     event: APIGatewayProxyEvent,
     ctx: any,
     callback: APIGatewayProxyCallback
   ) {
-    const faunaCtx = createClient(event);
+    const client = createClient(event);
 
     try {
       const payload = event.body ? JSON.parse(event.body) : null;
-      const response: Record<string, any> | [Record<string, any>, Record<string, any>] = await handler(faunaCtx, payload);
+      const response: Record<string, any> | [Record<string, any>, Record<string, any>] = await handler(client, payload);
 
       // custom options
       if (Array.isArray(response)) {
