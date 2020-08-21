@@ -10,9 +10,9 @@ An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https:
 
 1. Register a [Fauna](https://fauna.com/) account
 2. [Create a database](https://docs.fauna.com/fauna/current/start/cloud#create-db)
-3. Set server key in `.env`
-4. Install dependencies, `$ npm install`
-5. Build the database, `$ node ./schema.js`
+3. Create a server key and add it to `.env`
+4. Install dependencies, `npm install`
+5. Build the database, `npm run bootstrap-db`
 6. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
 
 Once this is done, the following commands will be available.
