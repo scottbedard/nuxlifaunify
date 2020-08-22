@@ -18,28 +18,19 @@ describe('User', () => {
 
   afterAll(() => faunaTeardown());
 
-  it('create', async () => {
-    const user = new User({
-      email: 'create@test.com',
-      password: 'secret',
-      passwordConfirmation: 'secret',
-    });
-
-    const { data } = await user.create(client);
-
-    expect(data.email).toBe('create@test.com');
-  });
-
-  it('login, identity, and logout', async () => {
-    await new User({
-      email: 'login@test.com',
+  it('create, login, identity, and logout', async () => {
+    // create a user
+    const create = await new User({
+      email: 'user@example.com',
       password: 'secret',
       passwordConfirmation: 'secret',
     }).create(client);
 
+    expect(create.data.email).toBe('user@example.com');
+
     // attempt authenticating with invalid credentials
     const invalid = new User({
-      email: 'login@test.com',
+      email: 'user@example.com',
       password: 'wrong-password',
     });
 
@@ -48,14 +39,14 @@ describe('User', () => {
 
     // authenticate with correct credentials
     const { secret } = await new User({
-      email: 'login@test.com',
+      email: 'user@example.com',
       password: 'secret',
     }).login(client);
     
     // we should now be logged in
     const userClient = new Client({ secret });
     const user = await User.identity(userClient);
-    expect(user.data.email).toBe('login@test.com');
+    expect(user.data.email).toBe('user@example.com');
 
     // kill the authentication session
     await User.logout(userClient);
