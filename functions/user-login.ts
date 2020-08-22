@@ -11,13 +11,9 @@ export const handler = lambda(async (client, payload) => {
   try {
     const user = new User(payload);
 
-    const { secret } = await client.query<{ secret: string }>(
-      user.login()
-    );
+    const { secret } = await user.login(client);
 
-    const result = await client.query<FaunaDocument<UserData>>(
-      user.findByEmail()
-    );
+    const result = await user.findByEmail(client);
 
     // authenticated
     return [{

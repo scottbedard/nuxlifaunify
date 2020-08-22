@@ -1,5 +1,5 @@
 import * as cookie from 'cookie';
-import { Client } from 'faunadb';
+import { Client, Expr, query as q } from 'faunadb';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { sessionKey } from './constants';
 import { FaunaDocument } from './types';
@@ -13,6 +13,15 @@ export function createClient(event: APIGatewayProxyEvent) {
   return new Client({
     secret: cookies?.[sessionKey] || process.env.FAUNADB_SERVER_SECRET || '',
   });
+}
+
+/**
+ * Execute one or more query expressions.
+ */
+export function query<T>(client: Client, expr: Expr | Expr[]) {
+  return Array.isArray(expr)
+    ? client.query<T>(q.Do(...expr))
+    : client.query<T>(q.Do(expr));
 }
 
 /**

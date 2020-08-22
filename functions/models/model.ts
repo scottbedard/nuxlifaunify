@@ -1,4 +1,4 @@
-import { Expr } from 'faunadb';
+import { Client, Expr, query as q } from 'faunadb';
 
 /**
  * Base model
@@ -26,12 +26,14 @@ export abstract class Model<Data> {
   }
 
   /**
-   * Create
-   */
-  abstract create(): Expr;
-
-  /**
    * Initial data
    */
   abstract initialData(): Data;
+
+  /**
+   * Execute a query transaction
+   */
+  static query<T>(client: Client, expressions: Expr[]) {
+    return client.query<T>(q.Do(...expressions));
+  }
 }

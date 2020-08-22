@@ -1,6 +1,7 @@
-import { query as q } from 'faunadb';
+import { Client, query as q } from 'faunadb';
 import { omit } from 'lodash';
 import { Model } from './model';
+import { FaunaDocument } from '../utils/types';
 
 export type UserData = {
   email: string,
@@ -35,31 +36,35 @@ export class User extends Model<UserData> {
   /**
    * Create.
    */
-  create() {
-    // @todo: check password confirmation
-
-    return q.Create(
-      q.Collection('User'), {
-        credentials: {
-          password: this.password,
-        },
-        data: this.data,
-      }
+  create(client: Client) {
+    return client.query<FaunaDocument<UserData>>(
+      q.Create(
+        q.Collection('User'), {
+          credentials: {
+            password: this.password,
+          },
+          data: this.data,
+        }
+      )
     );
   }
 
   /**
    * Find by email
    */
-  findByEmail() {
-    return q.Get(q.Match(q.Index('unique_User_email'), this.data.email));
+  findByEmail(client: Client) {
+    return client.query<FaunaDocument<UserData>>(
+      q.Get(q.Match(q.Index('unique_User_email'), this.data.email))
+    );
   }
 
   /**
    * Get authenticated user identity
    */
-  static identity() {
-    return q.Get(q.Identity());
+  static identity(client: Client) {
+    return client.query<FaunaDocument<UserData>>(
+      q.Get(q.Identity())
+    );
   }
 
   /**
@@ -72,19 +77,23 @@ export class User extends Model<UserData> {
   }
 
   /**
-   * Login.
+   * Login
    */
-  login() {
-    return q.Login(
-      q.Match(q.Index('unique_User_email'), this.data.email),
-      { password: this.password }
+  login(client: Client) {
+    return client.query<{ secret: string }>(
+      q.Login(
+        q.Match(q.Index('unique_User_email'), this.data.email),
+        { password: this.password }
+      )
     );
   }
 
   /**
    * Logout
    */
-  static logout() {
-    return q.Logout(true);
+  static logout(client: Client) {
+    return client.query(
+      q.Logout(true)
+    );
   }
 }

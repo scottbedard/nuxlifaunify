@@ -1,8 +1,7 @@
 import { destroyCookie, lambda } from './utils/http';
-import { FaunaDocument } from './utils/types';
 import { sessionKey } from './utils/constants';
 import { toData } from './utils/fauna';
-import { User, UserData } from './models/user';
+import { User } from './models/user';
 
 /**
  * Current user
@@ -10,9 +9,7 @@ import { User, UserData } from './models/user';
 export const handler = lambda(async (client) => {
   try {
     // query the authenticated user
-    const result = await client.query<FaunaDocument<UserData>>(
-      User.identity()
-    );
+    const result = await User.identity(client);
 
     return {
       user: toData(result),

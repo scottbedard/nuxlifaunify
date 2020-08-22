@@ -7,7 +7,7 @@ import { User } from './models/user';
  */
 export const handler = lambda(async (client) => {
   try {
-    await client.query(User.logout());
+    await User.logout(client);
   } catch (err) {
     console.log('Error:', err);
   }

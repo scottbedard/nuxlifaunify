@@ -1,8 +1,7 @@
 import { lambda, serializeCookie } from './utils/http';
 import { sessionKey } from './utils/constants';
 import { toData } from './utils/fauna';
-import { User, UserData } from './models/user';
-import { FaunaDocument } from './utils/types';
+import { User } from './models/user';
 
 /**
  * Create user
@@ -11,13 +10,9 @@ export const handler = lambda(async (client, payload) => {
   try {
     const user = new User(payload);
 
-    const result = await client.query<FaunaDocument<UserData>>(
-      user.create()
-    );
+    const result = await user.create(client);
 
-    const { secret } = await client.query<{ secret: string }>(
-      user.login()
-    );
+    const { secret } = await user.login(client);
 
     // success
     return [{

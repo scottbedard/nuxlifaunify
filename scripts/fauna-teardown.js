@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const chalk = require('chalk');
 const faunadb = require('faunadb');
 
 const client = new faunadb.Client({
@@ -15,10 +14,6 @@ const q = faunadb.query;
  * @return {Promise}
  */
 module.exports = async () => {
-  console.log(
-    chalk.bold.dim('\nCleaning up database...\n')
-  );
-
   await client.query(
     q.Do(
       q.Delete(q.Database(global.jestFaunaName)),

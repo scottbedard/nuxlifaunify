@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const chalk = require('chalk');
 const faunadb = require('faunadb');
 const bootstrap = require('./bootstrap');
 
@@ -17,10 +16,6 @@ const q = faunadb.query;
  */
 module.exports = async () => {
   global.jestFaunaName = `jest_${Date.now()}`;
-
-  console.log(
-    chalk.bold.dim(`\n\nBuilding test database "${global.jestFaunaName}"...\n`)
-  );
 
   const key = await client.query(
     q.Do(
