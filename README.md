@@ -1,6 +1,9 @@
 # nuxlifaunify
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/1f179ae9-7f19-4498-a9fc-853927994842/deploy-status)](https://nuxlifaunify.netlify.app/)
+[![Netlify](https://img.shields.io/netlify/1f179ae9-7f19-4498-a9fc-853927994842)](https://nuxlifaunify.netlify.app/)
+[![Build status](https://img.shields.io/github/workflow/status/scottbedard/nuxlifaunify/Test)](https://github.com/scottbedard/nuxlifaunify/actions?query=workflow%3ATest)
+[![Dependencies](https://img.shields.io/david/scottbedard/nuxlifaunify)](https://david-dm.org/scottbedard/nuxlifaunify)
+[![License](https://img.shields.io/github/license/scottbedard/nuxlifaunify?color=blue)](https://github.com/scottbedard/nuxlifaunify/blob/master/LICENSE)
 
 An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https://www.netlify.com/), [Fauna](https://fauna.com/), and [Typescript](https://www.typescriptlang.org/).
 
@@ -12,7 +15,7 @@ An experimental starting point for [Nuxt](https://nuxtjs.org/), [Netlify](https:
 2. [Create a database](https://docs.fauna.com/fauna/current/start/cloud#create-db)
 3. Create a server key and add it to `.env`
 4. Install dependencies, `npm install`
-5. Build the database, `npm run bootstrap-db`
+5. Build the database, `npm run bootstrap`
 6. Install [Netlify CLI](https://docs.netlify.com/cli/get-started/#installation)
 
 Once this is done, the following commands will be available.
