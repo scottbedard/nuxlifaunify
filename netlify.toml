@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build && node ./scripts/bootstrap-db.js"
+  command = "npm run build && npm run bootstrap"
   functions = "functions/built/functions"
   publish = "client/dist"
 
