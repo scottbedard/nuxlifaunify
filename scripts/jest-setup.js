@@ -4,35 +4,31 @@ const chalk = require('chalk');
 const faunadb = require('faunadb');
 const bootstrap = require('./bootstrap');
 
+const client = new faunadb.Client({
+  secret: process.env.FAUNADB_TEST_ADMIN_SECRET,
+});
+
+const q = faunadb.query;
+
 /**
  * Jest setup
  *
  * @return {Promise}
  */
 module.exports = async () => {
+  global.jestFaunaName = `jest_${Date.now()}`;
+
   console.log(
-    chalk.bold.dim('\nBootstrapping test database...')
+    chalk.bold.dim(`\n\nBuilding test database "${global.jestFaunaName}"...\n`)
   );
 
-  const client = new faunadb.Client({
-    secret: process.env.FAUNADB_TEST_SECRET,
-  });
-
-  const q = faunadb.query;
-
-  // create child database and key to isolate this test
   const key = await client.query(
     q.Do(
-      q.If(
-        q.IsDatabase(q.Database(process.env.FAUNADB_TEST_NAME)),
-        q.Delete(q.Database(process.env.FAUNADB_TEST_NAME)),
-        null
-      ),
       q.CreateDatabase({
-        name: process.env.FAUNADB_TEST_NAME,
+        name: global.jestFaunaName,
       }),
       q.CreateKey({
-        database: q.Database(process.env.FAUNADB_TEST_NAME),
+        database: q.Database(global.jestFaunaName),
         role: 'server',
       })
     )
@@ -41,15 +37,10 @@ module.exports = async () => {
   // store the key for teardown purposes
   global.jestFaunaKey = key;
 
-  // create a client connected to the child db and
-  // use it to bootstrap collections and indexes
+  // bootstrap the test database
   const childClient = new faunadb.Client({
     secret: key.secret,
   });
 
   await bootstrap(childClient);
-
-  console.log(
-    chalk.green.bold('Done.\n')
-  );
 }
