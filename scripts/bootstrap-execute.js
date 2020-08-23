@@ -9,9 +9,9 @@ const client = new faunadb.Client({
 });
 
 function checkForFaunaKey() {
-  if (!process.env.FAUNADB_SERVER_SECRET) {
+  if (!process.env.FAUNADB_ADMIN_SECRET) {
     console.log(
-      chalk.bold.red(`Required 'FAUNADB_SERVER_SECRET' environment variable not found.`)
+      chalk.bold.red(`Required 'FAUNADB_ADMIN_SECRET' environment variable not found.`)
     );
     console.log(
       chalk.yellow.bold(`
@@ -22,7 +22,7 @@ function checkForFaunaKey() {
     process.exit(1);
   }
 
-  return process.env.FAUNADB_SERVER_SECRET;
+  return process.env.FAUNADB_ADMIN_SECRET;
 }
 
 /**

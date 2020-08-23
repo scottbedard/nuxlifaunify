@@ -25,25 +25,20 @@ module.exports = async (client) => {
         body: q.Query(
           q.Lambda(
             ['email', 'password'],
-            q.If(
-              q.Call(q.Function('IsEmail'), q.Var('email')),
-              q.Create(
-                q.Collection('User'),
-                {
-                  credentials: {
-                    password: q.Var('password')
-                  },
-                  data: {
-                    email: q.Var('email'),
-                  },
+            q.Do(
+              q.Or(q.Call(q.Function('IsEmail'), q.Var('email')), q.Abort('invalid email')),
+              q.Or(q.Call(q.Function('IsValidPassword'), q.Var('password')), q.Abort('invalid password')),
+              q.Create(q.Collection('User'), {
+                credentials: {
+                  password: q.Var('password')
                 },
-              ),
-              q.Abort('invalid email')
+                data: {
+                  email: q.Var('email'),
+                },
+              })
             )
           )
-        ),
-        permissions: { call: 'public' },
-        role: 'server',
+        )
       }),
 
       // IsEmail
@@ -58,6 +53,20 @@ module.exports = async (client) => {
                 q.Var('email'),
                 '^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'
               )
+            )
+          )
+        )
+      }),
+
+      // IsValidPassword
+      createFunction({
+        name: 'IsValidPassword',
+        body: q.Query(
+          q.Lambda(
+            'password',
+            q.And(
+              q.IsString(q.Var('password')),
+              q.GTE(q.Length(q.Var('password')), 8), // min length
             )
           )
         )

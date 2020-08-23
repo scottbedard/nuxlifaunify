@@ -1,3 +1,4 @@
+import { Client, query as q } from 'faunadb';
 import { computed, ref } from '@nuxtjs/composition-api';
 import { user } from '~/app/api';
 
@@ -85,13 +86,28 @@ export function useRegisterCurrentUser() {
   const registerCurrentUserIsLoading = ref(false);
 
   const registerCurrentUser = (credentials) => {
-    registerCurrentUserIsLoading.value = true;
+    // registerCurrentUserIsLoading.value = true;
 
-    return user.create(credentials).then(response => {
-      _currentUser.value = response?.data?.user || null;
-    }).finally(() => {
-      registerCurrentUserIsLoading.value = false;
+    // return user.create(credentials).then(response => {
+    //   _currentUser.value = response?.data?.user || null;
+    // }).finally(() => {
+    //   registerCurrentUserIsLoading.value = false;
+    // });
+
+    console.log('here we go...', process.env.FAUNADB_CLIENT_SECRET);
+    const client = new Client({
+      secret: process.env.FAUNADB_CLIENT_SECRET
     });
+
+    return client.query(
+      q.Call(
+        q.Function('CreateUser'),
+        [
+          credentials.email,
+          credentials.password,
+        ]
+      )
+    )
   }
 
   return {

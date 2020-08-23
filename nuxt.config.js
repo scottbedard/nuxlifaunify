@@ -2,6 +2,9 @@ export default {
   buildModules: [
     '@nuxtjs/composition-api',
   ],
+  env: {
+    FAUNADB_CLIENT_SECRET: process.env.FAUNADB_CLIENT_SECRET || '',
+  },
   generate: {
     interval: 2000, // https://github.com/nuxt-community/composition-api/issues/44
   },
