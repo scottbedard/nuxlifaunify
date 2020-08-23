@@ -25,17 +25,21 @@ module.exports = async (client) => {
         body: q.Query(
           q.Lambda(
             ['email', 'password'],
-            q.Create(
-              q.Collection('User'),
-              {
-                credentials: {
-                  password: q.Var('password')
+            q.If(
+              q.Call(q.Function('IsEmail'), q.Var('email')),
+              q.Create(
+                q.Collection('User'),
+                {
+                  credentials: {
+                    password: q.Var('password')
+                  },
+                  data: {
+                    email: q.Var('email'),
+                  },
                 },
-                data: {
-                  email: q.Var('email'),
-                },
-              },
-            ),
+              ),
+              q.Abort('invalid email')
+            )
           )
         ),
         permissions: { call: 'public' },
