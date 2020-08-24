@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const faunadb = require('faunadb');
-const bootstrap = require('./bootstrap');
+const bootstrap = require('./fauna/bootstrap');
 
 const client = new faunadb.Client({
   secret: process.env.FAUNADB_TEST_ADMIN_SECRET,
@@ -24,7 +24,7 @@ module.exports = async () => {
       }),
       q.CreateKey({
         database: q.Database(global.jestFaunaName),
-        role: 'server',
+        role: 'admin',
       })
     )
   );

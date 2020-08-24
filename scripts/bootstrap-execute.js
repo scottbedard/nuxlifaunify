@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const chalk = require('chalk');
 const faunadb = require('faunadb');
-const bootstrap = require('./bootstrap');
+const bootstrap = require('./fauna/bootstrap');
 
 const client = new faunadb.Client({
   secret: checkForFaunaKey(),
