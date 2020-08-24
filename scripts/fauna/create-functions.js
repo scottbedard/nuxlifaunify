@@ -2,13 +2,10 @@ const faunadb = require('faunadb');
 
 const q = faunadb.query;
 
-function createFunction(obj) {
-  return q.Do(
-    q.If(
-      q.IsFunction(q.Function(obj.name)),
-      q.Delete(q.Function(obj.name)),
-      null,
-    ),
+function createOrUpdateFunction(obj) {
+  return q.If(
+    q.Exists(q.Function(obj.name)),
+    q.Update(q.Function(obj.name), obj),
     q.CreateFunction(obj)
   );
 }
@@ -20,8 +17,9 @@ module.exports = async (client) => {
   await client.query(
     q.Do(
       // CreateUser
-      createFunction({
+      createOrUpdateFunction({
         name: 'CreateUser',
+        role: 'server',
         body: q.Query(
           q.Lambda(
             ['email', 'password'],
@@ -35,14 +33,18 @@ module.exports = async (client) => {
                 data: {
                   email: q.Var('email'),
                 },
-              })
+              }),
+              q.Login(
+                q.Match(q.Index('unique_User_email'), q.Var('email')),
+                { password: q.Var('password') }
+              ),
             )
           )
         )
       }),
 
       // IsEmail
-      createFunction({
+      createOrUpdateFunction({
         name: 'IsEmail',
         body: q.Query(
           q.Lambda(
@@ -59,7 +61,7 @@ module.exports = async (client) => {
       }),
 
       // IsValidPassword
-      createFunction({
+      createOrUpdateFunction({
         name: 'IsValidPassword',
         body: q.Query(
           q.Lambda(

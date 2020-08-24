@@ -6,6 +6,8 @@
     "nuxt": "^2.14.3"
   },
   "devDependencies": {
+    "@nuxt/types": "^2.14.3",
+    "@nuxt/typescript-build": "^2.0.2",
     "@types/aws-lambda": "^8.10.61",
     "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.10",

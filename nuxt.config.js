@@ -1,6 +1,7 @@
 export default {
   buildModules: [
     '@nuxtjs/composition-api',
+    '@nuxt/typescript-build',
   ],
   env: {
     FAUNADB_CLIENT_SECRET: process.env.FAUNADB_CLIENT_SECRET || '',

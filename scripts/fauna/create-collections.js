@@ -2,17 +2,18 @@ const faunadb = require('faunadb');
 
 const q = faunadb.query;
 
-function createCollection(obj) {
-  return q.Or(
-    q.IsCollection(q.Collection(obj.name)),
-    q.IsCollection(q.CreateCollection(obj))
+function createOrUpdateCollection(obj) {
+  return q.If(
+    q.Exists(q.Collection(obj.name)),
+    q.Update(q.Collection(obj.name), obj),
+    q.CreateCollection(obj)
   );
 }
 
 module.exports = async (client) => {
   await client.query(
     q.Do(
-      createCollection({
+      createOrUpdateCollection({
         name: 'User',
       })
     )

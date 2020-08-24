@@ -2,10 +2,11 @@ const faunadb = require('faunadb');
 
 const q = faunadb.query;
 
-function createIndex(obj) {
-  return q.Or(
-    q.IsIndex(q.Index(obj.name)),
-    q.IsIndex(q.CreateIndex(obj))
+function createOrUpdateIndex(obj) {
+  return q.If(
+    q.Exists(q.Index(obj.name)),
+    q.Update(q.Index(obj.name), obj),
+    q.CreateIndex(obj)
   );
 }
 
@@ -15,7 +16,7 @@ function createIndex(obj) {
 module.exports = async (client) => {
   await client.query(
     q.Do(
-      createIndex({
+      createOrUpdateIndex({
         name: 'unique_User_email',
         permissions: { read: 'public'},
         source: q.Collection('User'),

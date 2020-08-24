@@ -1,4 +1,4 @@
-import { Client, query as q } from 'faunadb';
+import { query, q } from './fauna';
 import { computed, ref } from '@nuxtjs/composition-api';
 import { user } from '~/app/api';
 
@@ -85,29 +85,22 @@ export function useRedirectAuthenticatedUsers() {
 export function useRegisterCurrentUser() {
   const registerCurrentUserIsLoading = ref(false);
 
-  const registerCurrentUser = (credentials) => {
-    // registerCurrentUserIsLoading.value = true;
+  const registerCurrentUser = async (credentials) => {
+    try {
+      const { email, password } = credentials;
 
-    // return user.create(credentials).then(response => {
-    //   _currentUser.value = response?.data?.user || null;
-    // }).finally(() => {
-    //   registerCurrentUserIsLoading.value = false;
-    // });
+      const { secret } = await query(
+        q.Do(
+          q.Call(q.Function('CreateUser'), [email, password]),
+        )
+      );
 
-    console.log('here we go...', process.env.FAUNADB_CLIENT_SECRET);
-    const client = new Client({
-      secret: process.env.FAUNADB_CLIENT_SECRET
-    });
+      console.log('hooray!', secret);
+    } catch (err) {
+      console.log('Error:', err);
 
-    return client.query(
-      q.Call(
-        q.Function('CreateUser'),
-        [
-          credentials.email,
-          credentials.password,
-        ]
-      )
-    )
+      throw err;
+    }
   }
 
   return {
